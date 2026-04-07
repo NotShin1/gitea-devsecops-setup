@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      
+      - DB_TYPE=postgres
+      - DB_HOST=gitea-db:5432
+      - DB_NAME=gitea
+
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWD=${POSTGRES_PASSWORD}
+    volumes:
+      - gitea_data:/data
+    ports:
+      - 127.0.0.1:3000:3000
+      - 127.0.0.1:22:22
+    restart: always
+    networks:
+      - internal-network
+  pgsql:
+    image: postgres:13
+    container_name: gitea-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - psql_data:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 127.0.0.1:5432:5432
+    networks:
+      - internal-network
+volumes:
+  gitea_data:
+  psql_data:
+networks:
+  internal-network:
+    driver: bridge
