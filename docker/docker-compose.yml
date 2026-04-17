@@ -11,13 +11,11 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_USER=${POSTGRES_USER}
       - DB_PASSWD=${POSTGRES_PASSWORD}
-    read_only: true
-    tmpfs:
-      - /tmp
+    # Note: I deleted read_only option and tmpfs option to allow S6 work.
     security_opt:
       - no-new-privileges:true
     volumes:
-      - gitea_data:/data
+      - gitea_data:/data:rw
     ports:
       - 127.0.0.1:3000:3000
       - 127.0.0.1:2222:22 # SSH port for Gitea, port 22 is already used by server SSH service
