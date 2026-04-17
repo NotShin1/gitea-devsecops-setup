@@ -1,0 +1,7 @@
+---
+
+- hosts: gitea_devsecops_server
+  become: true
+  roles: 
+    - docker_setup
+    - gitea_deploy

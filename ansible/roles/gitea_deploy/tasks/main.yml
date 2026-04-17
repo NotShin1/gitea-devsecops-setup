@@ -1,0 +1,25 @@
+---
+
+# Create folder for gitea
+- name: Create folder for gitea
+  ansible.builtin.file:
+    path: /opt/gitea
+    state: directory
+
+# Copy docker-compose file to server
+- name: Copy docker-compose file to server
+  ansible.builtin.copy:
+    src: /home/shin/projects/gitea-devsecops-setup/docker/docker-compose.yml
+    dest: /opt/gitea/docker-compose.yml
+
+# Copy .env file to server
+- name: Copy .env file to server
+  ansible.builtin.copy:
+    src: /home/shin/projects/gitea-devsecops-setup/docker/.env
+    dest: /opt/gitea/.env
+
+# Run docker-compose to deploy gitea (noted that this will run with docker compose V2)
+- name: Run docker-compose to deploy gitea 
+  ansible.builtin.shell: docker compose up -d
+  args:
+    chdir: /opt/gitea
