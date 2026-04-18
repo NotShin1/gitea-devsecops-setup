@@ -1,0 +1,46 @@
+--- 
+
+# System SWAP file setup
+
+
+# Check if SWAP file already enabled
+- name: Check if SWAP file already enabled
+  ansible.builtin.command: swapon --show
+  register: swap_status
+  changed_when: false
+
+# Create SWAP file if not already enabled
+- name: Create 2GB SWAP file
+  ansbile.builtin.command: fallocate -l 2G /swapfile
+  args:
+    creates: /swapfile
+
+# Set permissions for SWAP file:
+- name: Set permissions for SWAP file
+  ansible.builtin.file:
+    path: /swapfile
+    owner: root
+    group: root
+    mode: '0600'
+
+# Format the SWAP file:
+- name: Format the SWAP file
+  ansible.builtin.command: mkswap /swapfile
+  when: swap_status.stdout == ""
+
+# Enable the SWAP file:
+- name: Enable the SWAP file
+  ansible.builtin.command: swapon /swapfile
+  when: swap_status.stdout == ""
+
+# Add SWAP to fstab for persistence:
+- name: Add SWAP to fstab for persistence
+  ansible.builtin.mount:
+    name: none
+    src: /swapfile
+    fstype: swap
+    opts: sw
+    passno: '0'
+    dump: '0'
+    state: present
+
