@@ -1,0 +1,61 @@
+---
+
+# Install UFW firewall
+- name: Install UFW firewall
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: yes
+
+# Default config: Deny all incoming
+- name: Set default UFW policy to deny incoming
+  ansible.builtin.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+
+# Allow SSH (port 22)
+- name: Allow SSH (port 22) through UFW
+  ansible.builtin.ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+
+# Allow HTTP and HTTPS (ports 80 and 443)
+- name: Allow HTTP and HTTPS (ports 80 and 443) through UFW
+  ansible.builtin.ufw:
+    rule: allow
+    port: {{ item }}
+    proto: tcp
+  loop:
+    - '80'
+    - '443'
+
+# Enable UFW firewall
+- name: Enable UFW firewall
+  community.general.ufw:
+    state: enabled
+
+# Disable password login
+- name: Disable password login
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+    validate: 'sshd -t -f %s'
+
+# Disable root login
+- name: Disable root login
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+    validate: 'sshd -t -f %s'
+
+# Restart SSH service to apply changes
+- name: Restart SSH service to apply changes
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
