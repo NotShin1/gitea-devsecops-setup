@@ -25,7 +25,7 @@
 - name: Allow HTTP and HTTPS (ports 80 and 443) through UFW
   ansible.builtin.ufw:
     rule: allow
-    port: {{ item }}
+    port: '{{ item }}'
     proto: tcp
   loop:
     - '80'

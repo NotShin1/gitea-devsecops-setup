@@ -68,3 +68,9 @@
     state: started
     enabled: yes
 
+# Add user to the docker group for docker access without sudo
+- name: Add user to the docker group for docker access without sudo
+  ansible.builtin.user:
+    name: shin
+    groups: docker
+    append: yes

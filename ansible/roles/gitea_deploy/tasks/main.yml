@@ -5,18 +5,27 @@
   ansible.builtin.file:
     path: /opt/gitea
     state: directory
+    owner: shin
+    group: shin
+    mode: '0755'
 
 # Copy docker-compose file to server
 - name: Copy docker-compose file to server
   ansible.builtin.copy:
     src: /home/shin/projects/gitea-devsecops-setup/docker/docker-compose.yml
     dest: /opt/gitea/docker-compose.yml
+    owner: shin
+    group: shin
+    mode: '0644'
 
 # Copy .env file to server
 - name: Copy .env file to server
   ansible.builtin.copy:
     src: /home/shin/projects/gitea-devsecops-setup/docker/.env
     dest: /opt/gitea/.env
+    owner: shin
+    group: shin
+    mode: '0644'
 
 # Run docker-compose to deploy gitea (noted that this will run with docker compose V2)
 - name: Run docker-compose to deploy gitea 
