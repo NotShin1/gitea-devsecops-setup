@@ -2,6 +2,8 @@
 
 - hosts: gitea_devsecops_server
   become: true
-  roles: 
+  roles:
+    - system_baseline
+    - iam_setup
     - docker_setup
     - gitea_deploy

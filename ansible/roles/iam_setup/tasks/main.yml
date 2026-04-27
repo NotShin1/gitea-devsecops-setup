@@ -1,0 +1,36 @@
+---
+
+# This role is responsible for setting up IAM (Identity and Access Management).
+
+# Create new user and add to sudo group
+- name: Create new user and add to sudo group
+  ansible.builtin.user:
+    name: shin
+    groups: sudo
+    shell: /bin/bash
+    append: yes
+    create_home: yes
+
+# Add user to sudoers file for passwordless sudo access
+- name: Add user to sudoers file for passwordless sudo access
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers.d/shin
+    state: present
+    create: yes
+    mode: '0440'
+    line: "shin ALL=(ALL) NOPASSWD: ALL"
+    validate: 'visudo -cf %s'
+
+# Set up SSH key for the new user
+- name: Set authorize SSH key for the new user
+  ansible.posix.authorized_key:
+    user: shin
+    state: present
+    key: "{{ lookup('file', '~/.ssh/shin-user-on-droplet.pub') }}"
+
+# Add user to the docker group for docker access without sudo
+- name: Add user to the docker group for docker access without sudo
+  ansible.builtin.user:
+    name: shin
+    groups: docker
+    append: yes
