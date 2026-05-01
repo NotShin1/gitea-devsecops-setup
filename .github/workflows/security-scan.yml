@@ -10,7 +10,7 @@ on: # Trigger the workflow on push or pull request to the main branch
 
 jobs:
   security-scan:
-    runs-on: ubuntu-20.04 # use the 20.04 Ubuntu 
+    runs-on: ubuntu-24.04 # use the 24.04 Ubuntu 
     steps:
 
       - name : Checkout code # Checkout the repository to the Ubuntu runner
