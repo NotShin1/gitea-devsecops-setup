@@ -35,7 +35,7 @@ jobs:
       - name: Trivy scan # Run Trivy to scan for vulnerabilities in the image
         uses: aquasecurity/trivy-action@master # Ensure you are using the latest version of the Trivy action
         with:
-          image-ref: 'gitea/gitea:1.25.5' # Specify the image to scan
+          image-ref: 'gitea/gitea:latest' # Specify the image to scan
           format: 'sarif' # Output format for the scan results: SARIF format 
           severity: 'HIGH,CRITICAL' # Only report vulnerabilities with HIGH or CRITICAL severity
           ignore-unfixed: true # Ignore vulnerabilities that do not have a fix available
@@ -52,6 +52,7 @@ jobs:
 
       - name: Checkov scan # Run Checkov to scan for vulnerabilities in the image
         uses: bridgecrewio/checkov-action@master # Ensure you are using the latest version of the Checkov action
+        if: always() # Ensure this step runs even if the previous step fails
         with:
           output_format: cli,sarif # Output format for the scan results
           output_file_path: console,checkov_report.sarif # Specify the output file path for the scan results
