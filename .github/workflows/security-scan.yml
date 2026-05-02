@@ -35,7 +35,7 @@ jobs:
       - name: Trivy scan # Run Trivy to scan for vulnerabilities in the image
         uses: aquasecurity/trivy-action@master # Ensure you are using the latest version of the Trivy action
         with:
-          image-ref: 'gitea/gitea:latest' # Specify the image to scan
+          image-ref: 'gitea/gitea:1.26.1' # Specify the image to scan
           format: 'sarif' # Output format for the scan results: SARIF format 
           severity: 'HIGH,CRITICAL' # Only report vulnerabilities with HIGH or CRITICAL severity
           ignore-unfixed: true # Ignore vulnerabilities that do not have a fix available

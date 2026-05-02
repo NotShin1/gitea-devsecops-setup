@@ -29,6 +29,7 @@ resource "digitalocean_droplet" "gitea-devsecops-droplet" {
 
 # Create Firewall resource
 resource "digitalocean_firewall" "gitea-devsecops-firewall" {
+    #checkov:skip=CKV_DO_1: Allowing SSH from anywhere is necessary for Github Actions to access the Droplet, but it is a security risk. In a production environment, consider restricting SSH access to specific IP addresses or using a VPN.
     name = "gitea-devsecops-firewall"
     droplet_ids = [digitalocean_droplet.gitea-devsecops-droplet.id]
 
