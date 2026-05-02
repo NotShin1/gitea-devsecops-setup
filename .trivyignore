@@ -1,0 +1,3 @@
+# Gitea image 1.26.1: nghttp2 DoS vulnerability (CVE-2023-44487)
+# Reason: This image don't have the patch for CVE-2023-44487, but we have Nginx in front of Gitea
+CVE-2023-44487
