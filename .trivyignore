@@ -7,3 +7,6 @@ CVE-2026-27135
 
 # This image is affected by CVE-2026-33845, but we have Nginx in front of Gitea, and the CVE is related to HTTP/2 DoS attack, so we can ignore it for now
 CVE-2026-33845
+
+# Waiting for the fix for CVE-2026-33846 by Gitea
+CVE-2026-33846
