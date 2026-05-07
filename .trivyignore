@@ -5,3 +5,5 @@ CVE-2023-44487
 CVE-2026-27135
 # Reason: This image don't have the patch for CVE-2026-27135, but we have Nginx in front of Gitea
 
+# This image is affected by CVE-2026-33845, but we have Nginx in front of Gitea, and the CVE is related to HTTP/2 DoS attack, so we can ignore it for now
+CVE-2026-33845
