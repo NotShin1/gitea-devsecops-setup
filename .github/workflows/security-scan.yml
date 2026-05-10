@@ -81,32 +81,28 @@ jobs:
     if: github.ref == 'refs/heads/main' # Only run the deploy job on the main branch
 
     steps:
-
+      
       - name: Checkout code # Checkout the repository to the Ubuntu runner
         uses: actions/checkout@v4
-
-      - name: Setup SSH key # Set up SSH key for deployment
-        uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Use the SSH private key stored in GitHub secrets
-      
-      - name: Install Ansible # Install Ansible on the Ubuntu runner
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-      
-      - name: Create inventory file # Create an Ansible inventory file with the target hosts
-        run: |
-          cd ansible
-          echo "[gitea_devsecops_server]" > inventory.ini
-          echo "${{ secrets.SERVER_IP}} ansible_user=${{ secrets.ANSIBLE_USER}}"  >> inventory.ini
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
+      - name: Copy docker-compose file # Copy the docker-compose.yml file to the Ubuntu runner
+        uses: appleboy/scp-action@v0.1.5 # Use the SCP action to copy files to the VPS
+        with:
+          host: ${{ secrets.SSH_HOST }} # SSH host for the VPS
+          username: ${{ secrets.SSH_USER}} # SSH user for the VPS
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: 'docker-compose.yml' # Specify the source file to copy
+          target: '/opt/gitea/' # Specify the target path on the
 
-      - name: Run Ansible playbook # Run the Ansible playbook to deploy the application
-        env:
-          ANSIBLE_HOST_KEY_CHECKING: 'False' # Disable host key checking for Ansible
-        run: |
-
-          cd ansible 
-
-          ansible-playbook -i inventory.ini playbook.yml 
+      - name: Deploy to VPS 
+        uses: appleboy/ssh-action@v0.1.5 # Use the SSH action to deploy to the VPS
+        with:
+          host: ${{ secrets.SSH_HOST }} # SSH host for the VPS
+          username: ${{ secrets.SSH_USER}} # SSH user for the VPS
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/gitea
+            docker-compose pull 
+            docker-compose up -d
