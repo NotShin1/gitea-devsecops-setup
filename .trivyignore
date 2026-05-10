@@ -10,3 +10,8 @@ CVE-2026-33845
 
 # Waiting for the fix for CVE-2026-33846 by Gitea
 CVE-2026-33846
+
+# Waiting for the fix for CVE-2026-3833, CVE-2026-42010,CVE-2026-42011 by Gitea
+CVE-2026-3833
+CVE-2026-42010
+CVE-2026-42011
