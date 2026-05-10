@@ -93,7 +93,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }} # SSH host for the VPS
           username: ${{ secrets.SSH_USER}} # SSH user for the VPS
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: 'docker-compose.yml' # Specify the source file to copy
+          source: '/docker/docker-compose.yml' # Specify the source file to copy
           target: '/opt/gitea/' # Specify the target path on the
 
       - name: Deploy to VPS 
