@@ -93,8 +93,9 @@ jobs:
           host: ${{ secrets.SSH_HOST }} # SSH host for the VPS
           username: ${{ secrets.SSH_USER}} # SSH user for the VPS
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: '/docker/docker-compose.yml' # Specify the source file to copy
+          source: 'docker/docker-compose.yml' # Specify the source file to copy
           target: '/opt/gitea/' # Specify the target path on the
+          strip_components: 1 # Strip the leading directory from the source file path
 
       - name: Deploy to VPS 
         uses: appleboy/ssh-action@v0.1.5 # Use the SSH action to deploy to the VPS
