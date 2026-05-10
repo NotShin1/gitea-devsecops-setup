@@ -97,7 +97,7 @@ jobs:
       
       - name: Create inventory file # Create an Ansible inventory file with the target hosts
         run: |
-          echo "[gitea_servers]" > inventory.ini
+          echo "[gitea_devsecops_server]" > inventory.ini
           echo "${{ secrets.SERVER_IP}} ansible_user=${{ secrets.ANSIBLE_USER}}"  >> inventory.ini
 
 
